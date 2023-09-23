@@ -1,0 +1,37 @@
+Метапрограммирование, это когда мы вызываем функцию по имени функции
+
+1. Функция send
+
+def mm
+	puts
+end
+
+Чтобы вызвать эту функцию через send нужно написать send :function_name или send "function_name"
+
+Так же при помощи send можно передавать аргумент:
+
+send :function_name, parameter
+
+Чтобы передать хэш:
+
+send :function_name, a => 1, b => 2
+
+Так же send можем использовать, чтобы объявить переменную внутри класса. Это нужно, чтобы уменьшить количество кода, при инициализации.
+
+send("var=","value")
+
+def initialize hash
+	hash.each do |key,value|
+		send("#key=", value}
+	end
+end
+
+2.method_missing 
+
+Используется для того, чтобы, если у объекта не правильный метод, или метод не присутствует, будет вызываться метод method_missing
+
+3. При помощи send можем определить метод:
+
+send :define_method, "method_name" do
+	block 
+end
