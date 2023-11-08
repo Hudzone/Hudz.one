@@ -2,7 +2,7 @@ require 'sinatra'
 require 'bootstrap'
 
 get '/' do
-  erb :welcome
+  erb :index
 end
 
 post '/' do
