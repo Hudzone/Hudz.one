@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'bootstrap'
 
 get '/' do
   erb :welcome
@@ -12,7 +13,7 @@ post '/' do
   @title = 'CONGRATS!'
   @message = "Dear, #{@user_name}, thank you for your apply! Waiting for you at #{@date_time}"
 
-  f = File.open 'users.txt', 'a'
+  f = File.open './public/users.txt', 'a'
   f.write "#{@user_name} (phone: #{@phone}) booked at #{@date_time}\n"
   f.close
 
@@ -28,7 +29,7 @@ post '/adm_result' do
   @password = params[:password]
 
   if @user_name == 'admin' && @password == 'admin'
-    @users = File.open("users.txt","r")
+    @users = File.open("./public/users.txt","r")
     erb :adm_result
   else
     @oth = '<p>Access denied! Wrong login or password.</p>'
