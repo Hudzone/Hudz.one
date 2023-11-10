@@ -3,7 +3,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 
 get '/' do
-	erb "Добро пожаловать на сайт нашего барбершопа! Мы открылись и рады новым клиентам"			
+  erb "Добро пожаловать на сайт нашего барбершопа! Мы открылись и рады новым клиентам"      
 end
 
 get '/termin' do 
@@ -54,4 +54,18 @@ post '/contacts' do
   erb :contacts
 end
 
+get '/account' do
+  erb :auth
+end
 
+post '/account' do
+  @log = params[:login]
+  @password = params[:passw]
+
+  if @log == 'secret' && @password == 'secret'
+    erb :account
+  else
+    @acc_den = '<p>Доступ запрещен! Логин или пароль не подходят!</p>'
+    erb :auth
+  end
+end
