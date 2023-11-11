@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'pony'
 
 get '/' do
   erb "Добро пожаловать на сайт нашего барбершопа! Мы открылись и рады новым клиентам"      
@@ -52,7 +53,7 @@ post '/visit' do
   if @error != ''
     return erb :visit
   end
-  
+
 # еще вариант
 # hh.each do |key,value|
 #   if params[key] == ''
@@ -81,6 +82,19 @@ end
 post '/contacts' do
   @mail = params[:e_mail]
   @feedback = params[:story]
+
+  cont = {
+    :e_mail => 'Вы не ввели e-mail',
+    :story => 'Вы не оставили отзыв'
+  }
+
+  cont.each do |key,value|
+    if params[key] == ''
+      @error = cont[key]
+
+      return erb :contacts
+    end
+  end
 
   kj = File.open './public/feedback.txt', 'a'
   kj.write "=============================================================================\n"
