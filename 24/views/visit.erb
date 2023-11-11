@@ -3,21 +3,22 @@
 <form action="/visit" method="POST">
   <div class="mb-3">
     <label>Давайте познакомимся :) </label>
-    <input name= "username" type="text" class="form-control" placeholder="Введите ваше имя...">
+    <input name= "username" type="text" class="form-control" placeholder="Введите ваше имя..." value="<%= @usrname %>">
   </div><br />
 
   <div class="mb-3">
     <label>Когда вам было бы удобно?</label>
-    <input name= "date_time" type="text" class="form-control" placeholder="Введите дату и время...">
+    <input name= "date_time" type="text" class="form-control" placeholder="Введите дату и время..." value="<%= @datetime %>">
   </div><br />
 
   <div class="mb-3">
     <label>Куда вам перезвонить?</label>
-    <input name="phone_number" type="text" class="form-control" placeholder="Введите ваш номер телефона...">
+    <input name="phone_number" type="text" class="form-control" placeholder="Введите ваш номер телефона..." value="<%= @phonenumber %>">
   </div><br />
 
-  <select name="barber" class="form-select" aria-label="Пример выбора по умолчанию">
-    <option selected>Выберите барбера, к которому хотите записаться</option>
+  <label>Выберите барбера:</label>
+  <select name="barber" class="form-select" aria-label="Пример выбора по умолчанию" value="<%= @brb %>">
+    <option selected></option>
     <option value="Грегори">Грегори</option>
     <option value="Тео">Тео</option>
     <option value="Леонидес">Леонидес</option>

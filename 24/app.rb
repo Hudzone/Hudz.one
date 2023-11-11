@@ -1,8 +1,114 @@
-#encoding: utf-8
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
 
 get '/' do
-	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
+  erb "Добро пожаловать на сайт нашего барбершопа! Мы открылись и рады новым клиентам"      
+end
+
+get '/termin' do 
+  erb :termin
+end
+
+get '/visit' do
+  erb :visit
+end
+
+post '/visit' do 
+  @usrname = params[:username]
+  @datetime = params[:date_time]
+  @phonenumber = params[:phone_number]
+  @brb = params[:barber]
+  @color = params[:color]
+
+#  ПРОСТАЯ ВАЛИДАЦИЯ
+#  if @usrname == ''
+#    @error = 'Введите имя пользователя!'
+#    return erb :visit
+#  elsif @datetime == ''
+#    @error = 'Введите дату и время записи!'
+#    return erb :visit
+#  elsif @phonenumber == ''
+#    @error = 'Введите номер телефона!'
+#    return erb :visit
+#  elsif @brb == ''
+#    @error = 'Выберите барбера!'
+#    return erb :visit
+# end
+
+#  if @error != ''
+#    return erb :visit
+#  end
+
+#  ВАЛИДАЦИЯ ЧЕРЕЗ ХЭШ
+  
+  hh = {:username => 'Введите имя',
+        :date_time => 'Введите дату и время записи',
+        :phone_number => 'Введите номер телефона',
+        :barber => 'Выберите барбера'}
+
+  @error = hh.select {|key,_| params[key]== ""}.values.join(", ")
+
+  if @error != ''
+    return erb :visit
+  end
+  
+# еще вариант
+# hh.each do |key,value|
+#   if params[key] == ''
+#     @error = hh[key]
+#     return erb :visit
+#   end
+# end
+    
+
+  f = File.open './public/users.txt', 'a'
+  f.write "#{@usrname} (телефон #{@phonenumber}) записался(сь) на #{@datetime} к #{@brb}. Выбран #{@color} цвет для покраски.\n"
+  f.close
+
+  erb :visit
+  
+end
+
+get '/something' do
+  erb :about
+end
+
+get '/contacts' do 
+  erb :contacts
+end
+
+post '/contacts' do
+  @mail = params[:e_mail]
+  @feedback = params[:story]
+
+  kj = File.open './public/feedback.txt', 'a'
+  kj.write "=============================================================================\n"
+  kj.write "Электронная почта: #{@mail}\n"
+  kj.write "Отзыв пользователя: \n"
+  kj.write "#{@feedback}\n"
+  kj.write "=============================================================================\n"
+  kj.close
+
+  yt = File.open './public/contacts.txt', 'a'
+  yt.write "#{@mail}\n"
+  yt.close
+
+  erb :contacts
+end
+
+get '/account' do
+  erb :auth
+end
+
+post '/account' do
+  @log = params[:login]
+  @password = params[:passw]
+
+  if @log == 'secret' && @password == 'secret'
+    erb :account
+  else
+    @acc_den = '<p>Доступ запрещен! Логин или пароль не подходят!</p>'
+    erb :auth
+  end
 end
