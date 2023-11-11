@@ -80,6 +80,7 @@ get '/contacts' do
 end
 
 post '/contacts' do
+  require 'pony'
   @mail = params[:e_mail]
   @feedback = params[:story]
 
@@ -96,12 +97,27 @@ post '/contacts' do
     end
   end
 
+  Pony.options = {   
+                   :from           => 'fyodor.blyudov@yandex.ru',
+                   :via            => :smtp,
+                   :via_options    => {
+                     :address        => 'smtp.yandex.ru',
+                     :port           => '25',
+                     :user_name      => '_____,
+                     :password       => '______',
+                     :authentication => :plain, 
+                     :domain         => "http://127.0.0.1:4567/"
+                    }
+                 } 
+
+  Pony.mail(subject: 'Hello', to: "fyodor@hudzone.ru", body: "#{@feedback}")
+
   kj = File.open './public/feedback.txt', 'a'
   kj.write "=============================================================================\n"
   kj.write "Электронная почта: #{@mail}\n"
   kj.write "Отзыв пользователя: \n"
   kj.write "#{@feedback}\n"
-  kj.write "=============================================================================\n"
+  kj.write "=============================================================================\n\n"
   kj.close
 
   yt = File.open './public/contacts.txt', 'a'
