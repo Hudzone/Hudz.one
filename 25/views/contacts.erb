@@ -1,0 +1,16 @@
+<h3>Контакты:</h3>
+
+<form action="/contacts" method="POST">
+  <div class="mb-3">
+    <label>Здесь вы можете связаться с нами!</label>
+    <label>Введите ваш e-mail:</label>
+    <input name= "e_mail" type="text" class="form-control" placeholder="Он нужен для обратной связи" value="<%= @mail %>">
+  </div><br />
+
+  <div class="mb-3">
+    <label>Ваш отзыв:</label><br />
+    <textarea id="story" name="story" rows="5" cols="55" placeholder="Разместите ваш отзыв" value="<%= @feedback %>">
+    </textarea>
+    <br /> 
+  <button type="submit" class="btn btn-danger">Записаться</button>
+</form>
