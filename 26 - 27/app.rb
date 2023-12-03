@@ -4,17 +4,58 @@ require 'sinatra/reloader'
 require 'pony'
 require 'sqlite3'
 
+#метод который дает узнать есть ли такая сущность в таблице
+def is_barber_exists? db, name
+  db.execute('select * from Barbers where Name=?', [name]).length > 0
+end
+
+
 #метод должен объявляется выше чем вызывается
 def get_db
     db = SQLite3::Database.new 'BarberShop.db'
-    #db.results_as_hash = true
+    db.results_as_hash = true
     return db
+end
+
+
+#
+def seed_db db, barbers
+  barbers.each do |barber|
+    if !is_barber_exists? db, barber
+      db.execute 'insert into Barbers (Name) values (?)', [barber]
+    end
+  end  
+end
+
+#делаем переменную во всех представлениях в Sinatra
+before do
+  db = get_db
+  @barbers = db.execute 'select * from Barbers order by id asc'
 end
 
 #инициализация прописывается тут, функция запускается всегда при перезапуске приложения
 configure do
   db = get_db
-  #команда для создания таблицы @db.execute 'синтаксис'
+  db.execute 'CREATE TABLE IF NOT EXISTS
+    "Users"
+    (
+      "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+      "Name" TEXT,
+      "Phone" TEXT,
+      "DateStamp" TEXT,
+      "Barber" TEXT,
+      "Color" Text
+    )'
+
+  db.execute 'CREATE TABLE IF NOT EXISTS
+    "Barbers"
+    (
+      "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+      "Name" TEXT
+    )'
+
+  seed_db db, ['Грегори', 'Тео', 'Леонидес']
+  
 end
 
 get '/' do
@@ -88,7 +129,9 @@ post '/visit' do
   db = get_db
   db.execute 'insert into Users (Name, Phone, DateStamp, Barber, Color) values (?,?,?,?,?)', [@usrname, @phonenumber, @datetime, @brb, @color]
 
-  erb :visit
+  
+
+  erb "<h4>Спасибо, что обратились к нам!</h4>"
   
 end
 
@@ -165,16 +208,23 @@ post '/account' do
 end
 
 get '/showusers' do
+
   erb :showusers
 end
 
 post '/showusers' do
-  @usr_list = []
   #при помощи do выполняем код, с выводом строк из базы данных
   db = get_db
-  db.execute 'select * from Users' do |row|
-    @usr_list << row
-  end
+
+  @results = db.execute 'select * from Users order by id asc'
 
   erb :showusers
+end
+
+get '/masters' do 
+  erb :masters
+end
+
+post '/masters' do
+  erb :masters
 end

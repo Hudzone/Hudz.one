@@ -27,12 +27,15 @@
     <input name="phone_number" type="text" class="form-control" placeholder="Введите ваш номер телефона..." value="<%= @phonenumber %>">
   </div><br />
 
-  <label>Выберите барбера:</label>
-  <select name="barber" class="form-select" aria-label="Пример выбора по умолчанию" value="<%= @brb %>">
-    <option selected></option>
-    <option value="Грегори">Грегори</option>
-    <option value="Тео">Тео</option>
-    <option value="Леонидес">Леонидес</option>
+  
+  <div class="form-group">
+    <label>Выберите барбера:</label>
+    <select name="barber" class="form-control">
+
+      <% @barbers.each do |item| %>
+        <option <%= @brb == item['Name'] ? 'selected' : ''  %>><%= item['Name'] %></option>
+      <% end %>
+
   </select>
   <br />
   <br />

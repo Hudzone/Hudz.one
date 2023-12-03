@@ -1,0 +1,22 @@
+<h3>Список барберов: </h3>
+
+<table class="table table-bordered">
+  <thead>
+  <%# <tr> - это строка, <td>  - это столбец %>
+
+  <%# Ставлю заголовок таблицы %>
+    <tr>
+      <th>Имя мастера</th>
+    </tr>
+
+  </thead>
+  <%# Вывожу руби код в тело таблицы %>
+  <tbody>
+  <% @barbers.each do |row| %>
+    <tr>
+      <td><%= row['Name'] %></td> 
+    </tr>
+  <% end %>
+  </tbody>
+
+</table>
